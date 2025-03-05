@@ -78,6 +78,6 @@ app.get("*", (req, res) => {
   // res.status(200).json({ message: "connected to server successfully" });
    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
-app.listen(port, () => {
+app.listen(port,'0.0.0.0',() => {
   console.log(`API Gateway is running on port ${port}`);
 });
