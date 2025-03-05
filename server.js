@@ -1,6 +1,7 @@
 // server.js
 const express = require("express");
 const { createProxyMiddleware } = require("http-proxy-middleware");
+const path = require("path");
 const dotenv = require("dotenv");
 // Use cors
 const cors = require("cors");
@@ -11,6 +12,28 @@ const app = express();
 
 // Use cors
 app.use(cors());
+
+//logger
+app.all("*", (req, res, next) => {
+  const date = new Date();
+  console.log(
+    `--> url:${req.url} status:${res.statusCode} ${date.toLocaleTimeString(
+      "en-IN",
+      {
+        timeZone: "Asia/Kolkata", // Indian Standard Time (IST)
+        hour12: false, // Use 24-hour format
+        weekday: "short", // Show abbreviated weekday name
+        year: "numeric", // Show full year
+        month: "short", // Show abbreviated month name
+        day: "numeric", // Show day of the month
+        hour: "2-digit", // Show hours in 2-digit format
+        minute: "2-digit", // Show minutes in 2-digit format
+        second: "2-digit", // Show seconds in 2-digit format
+      }
+    )}`
+  );
+  next();
+});
 
 // Proxy routes
 app.use(
@@ -47,7 +70,9 @@ app.use(
 );
 
 // Start the server
-const port = process.env.API_GATEWAY_PORT || 8000;
+const port = process.env.API_GATEWAY_PORT || 80;
+
+app.use(express.static(path.join(__dirname, "/dist")));
 app.listen(port, () => {
   console.log(`API Gateway is running on port ${port}`);
 });
