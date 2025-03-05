@@ -39,7 +39,7 @@ app.all("*", (req, res, next) => {
 app.use(
   "/api/chat",
   createProxyMiddleware({
-    target: "http://192.168.10.65:8002", // Backend service for chat
+    target: "http://localhost:8002", // Backend service for chat
     changeOrigin: true,
     pathRewrite: {
       "^/api/chat": "", // Remove '/api/chat' prefix before forwarding to chat backend
@@ -53,7 +53,7 @@ app.use(
 app.use(
   "/api/courses",
   createProxyMiddleware({
-    target: "http://192.168.10.49:8000/api/courses", // Backend service for courses
+    target: "http://localhost:8000/api/courses", // Backend service for courses
     changeOrigin: true,
   })
 );
@@ -61,7 +61,7 @@ app.use(
 app.use(
   "/api",
   createProxyMiddleware({
-    target: "http://192.168.10.111:8001", // Backend service for courses
+    target: "http://localhost:8001", // Backend service for courses
     changeOrigin: true,
     pathRewrite: {
       "^/api": "", // Remove '/api' prefix before forwarding to course backend
@@ -73,6 +73,11 @@ app.use(
 const port = process.env.API_GATEWAY_PORT || 80;
 
 app.use(express.static(path.join(__dirname, "/dist")));
+
+app.get("*", (req, res) => {
+  // res.status(200).json({ message: "connected to server successfully" });
+   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 app.listen(port, () => {
   console.log(`API Gateway is running on port ${port}`);
 });
