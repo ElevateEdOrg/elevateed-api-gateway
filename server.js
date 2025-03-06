@@ -80,6 +80,6 @@ app.get("*", (req, res) => {
 // Start the HTTP server on port 80
 
 app.listen(80, "0.0.0.0", () => {
-  console.log(`API Gateway is running on port ${httpPort}`);
+  console.log(`API Gateway is running on port`);
 });
 
